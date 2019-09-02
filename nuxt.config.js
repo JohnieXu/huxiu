@@ -31,7 +31,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~plugins/vant'],
+  plugins: ['~plugins/vant', '~plugins/flexible'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -56,6 +56,27 @@ export default {
    ** Build configuration
    */
   build: {
+    postcss: {
+      plugins: {
+        'postcss-pxtorem': {
+          rootValue: 37.5,
+          propList: [
+            'font',
+            'font-size',
+            'line-height',
+            'letter-spacing',
+            'width',
+            'height',
+            'flex',
+            'top',
+            'right',
+            'bottom',
+            'left',
+            'padding'
+          ]
+        }
+      }
+    },
     /*
      ** You can extend webpack config here
      */
