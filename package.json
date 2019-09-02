@@ -5,7 +5,7 @@
   "author": "JohnieXu",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "NUXT_HOST=0.0.0.0 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -23,6 +23,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "axios": "^0.19.0",
+    "dayjs": "^1.8.16",
     "nuxt": "^2.0.0",
     "vant": "^2.1.7"
   },

@@ -13,8 +13,8 @@ const actions = {
   }
 }
 
-export default {
+export default () => ({
   state,
   mutations,
   actions
-}
+})
