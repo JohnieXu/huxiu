@@ -24,3 +24,15 @@ export const getBannerList = () => {
       console.error(e)
     })
 }
+
+/**
+ * @description 获取24小时列表
+ */
+export const getHours24List = () => {
+  return axios
+    .get('/home/hours24_list')
+    .then((res) => res.data)
+    .catch((e) => {
+      console.error(e)
+    })
+}
