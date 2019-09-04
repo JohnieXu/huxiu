@@ -60,6 +60,8 @@ export default {
   // margin: 10px 0;
   padding: 0 12px;
   border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  z-index: 999;
   .title {
     flex: 1;
     font-size: 18px;

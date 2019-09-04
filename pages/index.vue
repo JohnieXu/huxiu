@@ -45,42 +45,84 @@
         </van-swipe-item>
       </template>
     </van-swipe>
+    <!-- APP下载推广 -->
+    <div class="app-link-image">
+      <a class="app-link-image__link" :href="appLinkImage.link_url">
+        <img class="app-link-image__image" :src="appLinkImage.image_url" />
+      </a>
+    </div>
+    <!-- 文章列表 -->
+    <h-article>
+      <h-article-item
+        v-for="(item, index) in articlesRecommend"
+        :key="index"
+        :item="item"
+      ></h-article-item>
+    </h-article>
+    <loadmore :load-more="getArticleList" @on-success="handleLoadmoreSuccess" />
   </div>
 </template>
 
 <script>
+/* eslint-disable no-console */
 import { mapState } from 'vuex'
 import HHeader from '@/components/header'
 import { HArticle, HArticleItem } from '@/components/article'
-import { getArticleList, getBannerList, getHours24List } from '@/api/home'
+import Loadmore from '@/components/loadmore'
+import {
+  getArticleList,
+  getBannerList,
+  getHours24List,
+  getAppLinkImage
+} from '@/api/home'
 export default {
   components: {
     HHeader,
     HArticle,
-    HArticleItem
+    HArticleItem,
+    Loadmore
   },
   data() {
     return {
-      articles: {},
+      articles: [],
       banners: [],
-      hours24s: []
+      hours24s: [],
+      appLinkImage: {},
+      articlesRecommend: []
     }
   },
   computed: {
     ...mapState({
       username: (state) => state.user.username
-    })
+    }),
+    isLoadmore() {
+      return true
+    }
   },
   async asyncData() {
     const [
       articleListData,
       bannerListData,
-      hours24ListData
-    ] = await Promise.all([getArticleList(), getBannerList(), getHours24List()])
+      hours24ListData,
+      appLinkImageData
+    ] = await Promise.all([
+      getArticleList(),
+      getBannerList(),
+      getHours24List(),
+      getAppLinkImage()
+    ])
     return {
       articles: articleListData.data || [],
       banners: bannerListData.data || [],
-      hours24s: hours24ListData.data || []
+      hours24s: hours24ListData.data || [],
+      appLinkImage: appLinkImageData.data || {}
+    }
+  },
+  methods: {
+    getArticleList,
+    handleLoadmoreSuccess(data) {
+      Array.isArray(data) &&
+        (this.articlesRecommend = [...this.articlesRecommend, ...data])
     }
   }
 }
@@ -123,6 +165,7 @@ export default {
   position: relative;
   font-size: 16px;
   color: #303030;
+  background: #fff;
   .hours24-title__text {
     display: inline-block;
     vertical-align: top;
@@ -143,6 +186,7 @@ export default {
 }
 .hours24 {
   height: 86px;
+  background: #fff;
   .hours24-item__container {
     display: flex;
     justify-content: center;
@@ -167,6 +211,16 @@ export default {
       color: #303030;
       font-weight: 400;
     }
+  }
+}
+.app-link-image {
+  .app-link-image__link {
+    display: block;
+    height: 100%;
+  }
+  .app-link-image__image {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

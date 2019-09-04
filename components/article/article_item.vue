@@ -50,7 +50,8 @@ export default {
   },
   props: {
     type: {
-      type: String // normal | picture | video
+      type: String, // normal | picture | video
+      default: 'normal'
     },
     item: {
       type: Object,
@@ -60,6 +61,7 @@ export default {
   },
   methods: {
     onClick() {
+      // eslint-disable-next-line
       console.log(this.item.id)
     }
   }

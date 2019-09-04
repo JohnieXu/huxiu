@@ -36,3 +36,15 @@ export const getHours24List = () => {
       console.error(e)
     })
 }
+
+/**
+ * @description 获取APP推广图片链接
+ */
+export const getAppLinkImage = () => {
+  return axios
+    .get('/home/app_link_image')
+    .then((res) => res.data)
+    .catch((e) => {
+      console.error(e)
+    })
+}
