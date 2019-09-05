@@ -1,6 +1,5 @@
 <template>
-  <!-- FIXME: 移动端touch事件不响应 -->
-  <div class="loadmore" @click="handleClick" @touch="handleClick">
+  <div class="loadmore" @click="handleClick">
     <template v-if="!isLoading">
       <slot>{{ text }}</slot>
     </template>

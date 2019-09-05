@@ -31,7 +31,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~plugins/vant', '~plugins/flexible'],
+  plugins: ['~plugins/vant', '~plugins/flexible', '~plugins/vconsole'],
   /*
    ** Nuxt.js dev-modules
    */
