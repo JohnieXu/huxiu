@@ -5,12 +5,12 @@
   "author": "JohnieXu",
   "private": true,
   "scripts": {
-    "dev": "NUXT_HOST=0.0.0.0 nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "test": "jest"
+    "dev": "cross-env NUXT_HOST=0.0.0.0 nuxt",
+    "build": "cross-env nuxt build",
+    "start": "cross-env nuxt start",
+    "generate": "cross-env nuxt generate",
+    "lint": "cross-env eslint --ext .js,.vue --ignore-path .gitignore .",
+    "test": "cross-env jest"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint"
@@ -36,6 +36,7 @@
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
+    "cross-env": "^6.0.3",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-nuxt": ">=0.4.2",
