@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h-header title="资讯" />
+    <h-header title="资讯" @on-category-click="handleCategoryClick" />
     <!-- banner -->
     <van-swipe :autoplay="5000" indicator-color="white" class="banner">
       <template v-if="Array.isArray(banners)">
@@ -60,6 +60,23 @@
       ></h-article-item>
     </h-article>
     <loadmore :load-more="getArticleList" @on-success="handleLoadmoreSuccess" />
+    <van-popup
+      v-model="isShow.category"
+      position="botom"
+      round
+      closable
+      :style="{ height: '90%' }"
+    >
+      <van-tabs>
+        <van-tab
+          v-for="(item, index) in categories"
+          :key="index"
+          :title="item.title"
+        >
+          内容{{ index }}
+        </van-tab>
+      </van-tabs>
+    </van-popup>
   </div>
 </template>
 
@@ -88,7 +105,11 @@ export default {
       banners: [],
       hours24s: [],
       appLinkImage: {},
-      articlesRecommend: []
+      articlesRecommend: [],
+      categories: [],
+      isShow: {
+        category: false
+      }
     }
   },
   computed: {
@@ -123,6 +144,10 @@ export default {
     handleLoadmoreSuccess(data) {
       Array.isArray(data) &&
         (this.articlesRecommend = [...this.articlesRecommend, ...data])
+    },
+    // 头部分类点击
+    handleCategoryClick() {
+      this.isShow.category = true
     }
   }
 }
