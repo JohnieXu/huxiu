@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h-header title="资讯" @on-category-click="handleCategoryClick" />
+    <h-header
+      title="资讯"
+      @on-category-click="handleCategoryClick"
+      @on-search-click="handleSearchClick"
+    />
     <!-- banner -->
     <van-swipe :autoplay="5000" indicator-color="white" class="banner">
       <template v-if="Array.isArray(banners)">
@@ -57,15 +61,18 @@
         v-for="(item, index) in articlesRecommend"
         :key="index"
         :item="item"
+        :type="item.type"
       ></h-article-item>
     </h-article>
     <loadmore :load-more="getArticleList" @on-success="handleLoadmoreSuccess" />
     <van-popup
       v-model="isShow.category"
       position="botom"
+      get-container="body"
+      safe-area-inset-bottom
       round
       closable
-      :style="{ height: '90%' }"
+      :style="{ width: '100%', height: '90%' }"
     >
       <van-tabs>
         <van-tab
@@ -77,6 +84,24 @@
         </van-tab>
       </van-tabs>
     </van-popup>
+    <!-- 搜索 -->
+    <div class="search" v-show="isShow.search">
+      <van-search
+        v-model="searchWord"
+        placeholder="请输入关键词搜索"
+        shape="round"
+        ref="search"
+        show-action
+        autofous
+        @search="handleSearch"
+        @cancel="handleSearchCancel"
+      ></van-search>
+      <h-tag-list
+        title="热搜词"
+        :list-data="searchHotWords"
+        @on-item-click="handleSearchWordItemClick"
+      ></h-tag-list>
+    </div>
   </div>
 </template>
 
@@ -85,6 +110,7 @@
 import { mapState } from 'vuex'
 import HHeader from '@/components/header'
 import { HArticle, HArticleItem } from '@/components/article'
+import HTagList from '@/components/tag_list'
 import Loadmore from '@/components/loadmore'
 import {
   getArticleList,
@@ -97,7 +123,8 @@ export default {
     HHeader,
     HArticle,
     HArticleItem,
-    Loadmore
+    Loadmore,
+    HTagList
   },
   data() {
     return {
@@ -106,10 +133,26 @@ export default {
       hours24s: [],
       appLinkImage: {},
       articlesRecommend: [],
-      categories: [],
+      categories: [
+        {
+          title: '资讯',
+          url: ''
+        },
+        {
+          title: '24小时',
+          url: ''
+        },
+        {
+          title: '活动',
+          url: ''
+        }
+      ],
       isShow: {
-        category: false
-      }
+        category: false,
+        search: false
+      },
+      searchHotWords: ['头条', '科技'], // 热搜词
+      searchWord: '' // 搜索词
     }
   },
   computed: {
@@ -142,12 +185,37 @@ export default {
   methods: {
     getArticleList,
     handleLoadmoreSuccess(data) {
-      Array.isArray(data) &&
-        (this.articlesRecommend = [...this.articlesRecommend, ...data])
+      if (Array.isArray(data)) {
+        // FIXME: 测试picture类型的文章
+        if (this.articlesRecommend.length % 3 === 1) {
+          data[0] && (data[0].type = 'picture')
+        }
+        // FIXME: 测试video类型的文章
+        this.articlesRecommend = [...this.articlesRecommend, ...data]
+      }
     },
     // 头部分类点击
     handleCategoryClick() {
       this.isShow.category = true
+    },
+    // 头部搜做点击
+    handleSearchClick() {
+      this.isShow.search = true
+      this.$nextTick(() => {
+        this.$refs.search.focus()
+      })
+    },
+    // 热搜词点击
+    handleSearchWordItemClick(word) {
+      this.searchWord = word
+    },
+    // 点击搜索
+    handleSearch(keyword) {
+      console.log(keyword)
+    },
+    // 搜索取消
+    handleSearchCancel() {
+      this.isShow.search = false
     }
   }
 }
@@ -187,7 +255,6 @@ export default {
   }
 }
 .hours24-title {
-  position: relative;
   font-size: 16px;
   color: #303030;
   background: #fff;
@@ -247,5 +314,14 @@ export default {
     width: 100%;
     height: 100%;
   }
+}
+.search {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  z-index: 999;
 }
 </style>
